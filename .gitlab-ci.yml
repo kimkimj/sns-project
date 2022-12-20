@@ -1,4 +1,4 @@
-stages:
+stages: 
   - dockerbuild-push
 
 package:
