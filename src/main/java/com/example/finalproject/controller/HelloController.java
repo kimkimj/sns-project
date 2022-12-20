@@ -12,4 +12,7 @@ public class HelloController {
     public String hello(){
         return "hello";
     }
+
+    @GetMapping("/cicd")
+    public String hello2() {return "testing cicd";}
 }
