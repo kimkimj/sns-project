@@ -2,9 +2,11 @@ package com.example.finalproject.service;
 
 import com.example.finalproject.domain.User;
 import com.example.finalproject.domain.dto.UserDto;
+import com.example.finalproject.domain.dto.UserJoinRequest;
+import com.example.finalproject.exception.AppException;
+import com.example.finalproject.exception.ErrorCode;
 import com.example.finalproject.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,22 +17,22 @@ public class UserService {
     private final UserRepository userRepository;
     //private final BCryptPasswordEncoder encode;
 
-    public String join(String username, String password) {
+    public UserDto  join(UserJoinRequest request) {
 
         // username 중복 체크해서 이미 존재하는 아이디면 exception
-        userRepository.findByUsername(username)
+        userRepository.findByUsername(request.getUsername())
                 .ifPresent(user -> {
-                    throw new RuntimeException("이미 존재하는 아이디 입니다");
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATED,
+                            String.format("%s은 이미 존재하는 아이디 입니다", request.getUsername()));
                 });
 
         // 아니라면 저장
-        User user = User.builder()
-                .username(username)
-                .password(password)
-                .build();
-        userRepository.save(user);
+        User savedUser = userRepository.save(request.toEntity());
 
         // 반환
-        return "SUCCESS";
+        return UserDto.builder()
+                .id(savedUser.getId())
+                .username(savedUser.getUsername())
+                .build();
     }
 }

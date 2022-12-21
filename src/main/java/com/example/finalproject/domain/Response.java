@@ -10,7 +10,7 @@ public class Response<T> {
     private T result;
 
     // 에러가 나면 코드와 null을 constructor에 넣어 생성
-    private static Response<Void> error(String resultCode) {
+    public static Response<Void> error(String resultCode) {
         return new Response(resultCode, null);
     }
 
