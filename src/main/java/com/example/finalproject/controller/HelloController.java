@@ -10,9 +10,6 @@ public class HelloController {
 
     @GetMapping()
     public String hello(){
-        return "hello";
+        return "darkchocolate";
     }
-
-    @GetMapping("/cicd")
-    public String hello2() {return "testing cicd again";}
 }
