@@ -13,7 +13,6 @@ public class ExceptionManager {
         return ResponseEntity.status(e.getErrorCode().getHttpStatus())
                 .body(Response.error(e.getMessage()));
     }
-
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> runtimeExceptionHandler(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
