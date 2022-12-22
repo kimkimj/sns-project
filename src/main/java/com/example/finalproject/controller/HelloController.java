@@ -12,4 +12,9 @@ public class HelloController {
     public String hello(){
         return "darkchocolate";
     }
+
+    @GetMapping("/cicd")
+    public String hello2(){
+        return "cicd check";
+    }
 }
