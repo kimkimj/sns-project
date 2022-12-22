@@ -4,6 +4,7 @@ import com.example.finalproject.domain.Response;
 import com.example.finalproject.domain.dto.UserDto;
 import com.example.finalproject.domain.dto.UserJoinRequest;
 import com.example.finalproject.domain.dto.UserJoinResponse;
+import com.example.finalproject.domain.dto.UserLoginRequest;
 import com.example.finalproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,4 +25,5 @@ public class UserController {
         UserDto userDto = userService.join(userJoinRequest);
         return Response.success(new UserJoinResponse(userDto.getUsername()));
     }
+
 }

@@ -1,12 +1,15 @@
 package com.example.finalproject.service;
 
+import com.example.finalproject.controller.UserLoginResponse;
 import com.example.finalproject.domain.User;
 import com.example.finalproject.domain.dto.UserDto;
 import com.example.finalproject.domain.dto.UserJoinRequest;
+import com.example.finalproject.domain.dto.UserLoginRequest;
 import com.example.finalproject.exception.AppException;
 import com.example.finalproject.exception.ErrorCode;
 import com.example.finalproject.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,9 +18,9 @@ public class UserService {
 
     // 중복 체크를 위해 DB에 다녀와야 한다
     private final UserRepository userRepository;
-    //private final BCryptPasswordEncoder encode;
+    private final BCryptPasswordEncoder encoder;
 
-    public UserDto  join(UserJoinRequest request) {
+    public UserDto join(UserJoinRequest request) {
 
         // username 중복 체크해서 이미 존재하는 아이디면 exception
         userRepository.findByUsername(request.getUserName())
@@ -27,7 +30,7 @@ public class UserService {
                 });
 
         // 아니라면 저장
-        User savedUser = userRepository.save(request.toEntity());
+        User savedUser = userRepository.save(request.toEntity(encoder.encode(request.getPassword())));
 
         // 반환
         return UserDto.builder()
@@ -35,4 +38,5 @@ public class UserService {
                 .username(savedUser.getUsername())
                 .build();
     }
+
 }
