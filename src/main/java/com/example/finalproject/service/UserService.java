@@ -20,10 +20,10 @@ public class UserService {
     public UserDto  join(UserJoinRequest request) {
 
         // username 중복 체크해서 이미 존재하는 아이디면 exception
-        userRepository.findByUsername(request.getUsername())
+        userRepository.findByUsername(request.getUserName())
                 .ifPresent(user -> {
                     throw new AppException(ErrorCode.USERNAME_DUPLICATED,
-                            String.format("%s은 이미 존재하는 아이디 입니다", request.getUsername()));
+                            String.format("%s은 이미 존재하는 아이디 입니다", request.getUserName()));
                 });
 
         // 아니라면 저장

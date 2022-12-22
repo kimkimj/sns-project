@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class UserJoinRequest {
-    private String username;
+    private String userName;
     private String password;
 
     public User toEntity() {
         return User.builder()
-                .username(this.username)
+                .username(this.userName)
                 .password(this.password)
                 .build();
     }
