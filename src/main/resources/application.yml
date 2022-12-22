@@ -12,4 +12,8 @@ spring:
         username: root
         password: password
 
+jwt:
+    token:
+        secret: "secretKey"
+
 
