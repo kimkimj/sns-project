@@ -41,7 +41,16 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // authorization에서 token 꺼내기
-        String token = authorization.split("")[1];
+        String token;
+
+        try {
+            token = authorization.split(" ")[1];
+        } catch (Exception e) {
+            log.error("token 추출에 실패했습니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
         // token이 expire됐는지 확인
         if (JwtTokenUtil.isExpired(token, secretKey)) {
