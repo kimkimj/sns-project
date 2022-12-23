@@ -10,11 +10,7 @@ public class HelloController {
 
     @GetMapping()
     public String hello(){
-        return "darkchocolate";
+        return "popin";
     }
 
-    @GetMapping("/cicd")
-    public String hello2(){
-        return "cicd check";
-    }
 }
