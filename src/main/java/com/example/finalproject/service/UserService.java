@@ -1,9 +1,9 @@
 package com.example.finalproject.service;
 
 import com.example.finalproject.domain.entity.User;
-import com.example.finalproject.domain.dto.UserDto;
-import com.example.finalproject.domain.dto.UserJoinRequest;
-import com.example.finalproject.domain.dto.UserLoginRequest;
+import com.example.finalproject.domain.dto.user.UserDto;
+import com.example.finalproject.domain.dto.user.UserJoinRequest;
+import com.example.finalproject.domain.dto.user.UserLoginRequest;
 import com.example.finalproject.exception.AppException;
 import com.example.finalproject.exception.ErrorCode;
 import com.example.finalproject.respository.UserRepository;

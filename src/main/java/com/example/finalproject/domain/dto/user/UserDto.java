@@ -1,4 +1,4 @@
-package com.example.finalproject.domain.dto;
+package com.example.finalproject.domain.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

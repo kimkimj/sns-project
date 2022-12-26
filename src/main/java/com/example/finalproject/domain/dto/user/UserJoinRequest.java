@@ -1,4 +1,4 @@
-package com.example.finalproject.domain.dto;
+package com.example.finalproject.domain.dto.user;
 
 import com.example.finalproject.domain.entity.User;
 import com.example.finalproject.domain.UserRole;
