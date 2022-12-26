@@ -1,7 +1,8 @@
 package com.example.finalproject.config;
 
+import com.example.finalproject.domain.entity.User;
 import com.example.finalproject.service.UserService;
-import com.example.finalproject.utils.JwtTokenUtil;
+import com.example.finalproject.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -62,6 +63,10 @@ public class JwtFilter extends OncePerRequestFilter {
         // username 토큰에서 꺼내기
         String username = JwtTokenUtil.getUsername(token, secretKey);
         log.info("username:{}", username);
+
+        // usernmae으로 userRole을 꺼내기
+        User user = userService.getUserByUsername(username);
+        log.info("userRole: {}", user.getRole());
 
         //권한 부여
         UsernamePasswordAuthenticationToken authenticationToken =

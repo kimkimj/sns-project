@@ -1,13 +1,13 @@
 package com.example.finalproject.service;
 
-import com.example.finalproject.domain.User;
+import com.example.finalproject.domain.entity.User;
 import com.example.finalproject.domain.dto.UserDto;
 import com.example.finalproject.domain.dto.UserJoinRequest;
 import com.example.finalproject.domain.dto.UserLoginRequest;
 import com.example.finalproject.exception.AppException;
 import com.example.finalproject.exception.ErrorCode;
 import com.example.finalproject.respository.UserRepository;
-import com.example.finalproject.utils.JwtTokenUtil;
+import com.example.finalproject.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,7 +39,7 @@ public class UserService {
 
         // 반환
         return UserDto.builder()
-                .id(savedUser.getId())
+                .id(savedUser.getUserId())
                 .username(savedUser.getUsername())
                 .build();
     }
@@ -60,4 +60,11 @@ public class UserService {
 
         return token;
     }
+
+    // userName으로 User 검색. 없으면 USERNAME_NOT_FOUND 발생 시킴
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, ""));
+        }
 }
+

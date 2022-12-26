@@ -1,6 +1,7 @@
 package com.example.finalproject.domain.dto;
 
-import com.example.finalproject.domain.User;
+import com.example.finalproject.domain.entity.User;
+import com.example.finalproject.domain.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class UserJoinRequest {
         return User.builder()
                 .username(this.userName)
                 .password(password)
+                .role(UserRole.USER) // join 요청 시, 'USER' 가 default Role로 입력 됨
                 .build();
     }
 
