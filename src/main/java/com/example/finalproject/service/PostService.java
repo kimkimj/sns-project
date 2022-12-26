@@ -10,7 +10,8 @@ import com.example.finalproject.exception.ErrorCode;
 import com.example.finalproject.respository.PostRepository;
 import com.example.finalproject.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,4 +34,10 @@ public class PostService {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOTFOUND, ErrorCode.POST_NOTFOUND.getMessage()));
     }
+
+    public Page<Post> getAll(Pageable pageable) {
+        return postRepository.findAll(pageable);
+    }
+
+
 }
