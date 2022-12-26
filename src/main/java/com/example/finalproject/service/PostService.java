@@ -28,4 +28,9 @@ public class PostService {
         PostResponse postResponse = new PostResponse("포스트 등록 완료", post.getPostId());
         return postResponse;
     }
+
+    public Post findById(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOTFOUND, ErrorCode.POST_NOTFOUND.getMessage()));
+    }
 }

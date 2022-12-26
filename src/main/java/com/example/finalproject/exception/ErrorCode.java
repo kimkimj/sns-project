@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
     USERNAME_DUPLICATED(HttpStatus.CONFLICT, "이미 존재하는 아이디 입니다"),
-    USERNAME_NOT_FOUND(HttpStatus.NOT_FOUND, ""),
-    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "");
+    USERNAME_NOT_FOUND(HttpStatus.NOT_FOUND, "아이디를 찾을 수 없습니다"),
+    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "권한이 없습니다"),
+
+    POST_NOTFOUND(HttpStatus.NOT_FOUND, "포스트를 찾을 수 없습니다");
 
     private HttpStatus httpStatus;
     private String message;
