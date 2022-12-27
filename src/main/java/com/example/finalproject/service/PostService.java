@@ -1,6 +1,7 @@
 package com.example.finalproject.service;
 
 import com.example.finalproject.domain.Response;
+import com.example.finalproject.domain.dto.post.PostDeleteResponse;
 import com.example.finalproject.domain.dto.post.PostGetResponse;
 import com.example.finalproject.domain.dto.post.PostRequest;
 import com.example.finalproject.domain.dto.post.PostResponse;
@@ -69,7 +70,24 @@ public class PostService {
 
         PostResponse postResponse = new PostResponse("포스트 수정 완료", postId);
         return postResponse;
-
     }
+
+    public PostResponse delete(Long postId, String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+
+        if (!user.getUsername().equals(post.getUser().getUsername())) {
+            throw new AppException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage());
+        }
+
+        postRepository.deleteById(postId);
+        PostResponse postResponse = new PostResponse("포스트 삭제 완료", postId);
+        return postResponse;
+    }
+
+
 
 }

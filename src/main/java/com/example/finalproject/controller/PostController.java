@@ -48,4 +48,10 @@ public class PostController {
 
     }
 
+    @DeleteMapping("/{postId}")
+    public Response<PostResponse> delete(@PathVariable Long postId, Authentication authentication) {
+        PostResponse postResponse = postService.delete(postId, authentication.getName());
+        return Response.success(postResponse);
+    }
+
 }
