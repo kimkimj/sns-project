@@ -1,8 +1,5 @@
 package com.example.finalproject.service;
 
-import com.example.finalproject.domain.Response;
-import com.example.finalproject.domain.dto.post.PostDeleteResponse;
-import com.example.finalproject.domain.dto.post.PostGetResponse;
 import com.example.finalproject.domain.dto.post.PostRequest;
 import com.example.finalproject.domain.dto.post.PostResponse;
 import com.example.finalproject.domain.entity.Post;
