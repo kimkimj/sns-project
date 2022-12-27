@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -33,10 +35,11 @@ public class PostController {
         return Response.success(postGetResponse);
     }
 
-  /*
+
     @GetMapping("")
-    public Response<PostListResponse> getAllPosts(Pageable pageable) {
-    }*/
+    public Response<List<PostGetResponse>> getAllPosts(Pageable pageable) {
+        return Response.success(postService.getAll(pageable));
+    }
 
     @PutMapping("/{postId}")
     public Response<PostResponse> update(@PathVariable Long postId,
