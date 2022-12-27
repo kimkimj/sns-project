@@ -87,11 +87,11 @@ public class PostService {
     }
 
 
-    public List<PostGetResponse> getAll(Pageable pageable) {
+    public PostListResponse getAll(Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
-        List<PostGetResponse> list = new ArrayList<>();
+        List<PostGetResponse> postList = new ArrayList<>();
         for (Post post: posts) {
-            PostGetResponse.builder()
+            PostGetResponse onePost = PostGetResponse.builder()
                     .id(post.getPostId())
                     .title(post.getTitle())
                     .body(post.getBody())
@@ -99,7 +99,14 @@ public class PostService {
                     .createdAt(post.getCreatedAt())
                     .lastModifiedAt(post.getLastModifiedAt())
                     .build();
+
+            postList.add(onePost);
         }
-        return list;
+
+        return PostListResponse.builder()
+                .list(postList)
+                .pageable(pageable)
+                .build();
+
     }
 }
