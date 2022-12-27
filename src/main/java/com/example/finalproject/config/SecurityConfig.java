@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .cors().and()
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
-                .antMatchers("/api/v1/users/join", "/api/v1/users/login").permitAll()
+                .antMatchers("/api/v1/hello", "/api/v1/users/join", "/api/v1/users/login").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1/posts/**").permitAll()
                 .antMatchers("/api/v1/**").authenticated()
                 .and()
