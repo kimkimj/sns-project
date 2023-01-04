@@ -132,4 +132,23 @@ public class PostService {
                 .build();
 
     }
+
+    public PostListResponse getAllByUser(String username, Pageable pageable) {
+        User user = checkIfUserExists(username);
+
+        Page<Post> list = postRepository.findAllByUser(user, pageable);
+        List<PostGetResponse> postListResponse = list.map(lists -> PostGetResponse.builder()
+                        .id(lists.getPostId())
+                        .title(lists.getTitle())
+                        .body(lists.getBody())
+                        .userName(lists.getUser().getUsername())
+                        .createdAt(lists.getCreatedAt())
+                        .lastModifiedAt(lists.getLastModifiedAt())
+                        .build())
+                .toList();
+
+        return PostListResponse.builder()
+                .list(postListResponse)
+                .build();
+    }
 }

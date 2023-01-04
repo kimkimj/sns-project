@@ -57,4 +57,10 @@ public class PostController {
         return Response.success(postResponse);
     }
 
+    @GetMapping("/posts/my")
+    public Response<PostListResponse> myPage(Authentication authentication, Pageable pageable) {
+        PostListResponse postListResponse = postService.getAllByUser(authentication.getName(), pageable);
+        return Response.success(postListResponse);
+    }
+
 }
