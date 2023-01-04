@@ -13,4 +13,7 @@ public class HelloController {
         return "김미지";
     }
 
+    @GetMapping("/cicd")
+    public String cicdCheck() { return "cicd";}
+
 }

@@ -5,7 +5,6 @@ import com.example.finalproject.domain.dto.post.*;
 import com.example.finalproject.domain.entity.Post;
 import com.example.finalproject.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
