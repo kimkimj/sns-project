@@ -5,7 +5,7 @@ import com.example.finalproject.domain.dto.comment.CommentDeleteResponse;
 import com.example.finalproject.domain.dto.comment.CommentListResponse;
 import com.example.finalproject.domain.dto.comment.CommentRequest;
 import com.example.finalproject.domain.dto.comment.CommentResponse;
-import com.example.finalproject.service.PostService;
+import com.example.finalproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/posts")
 public class CommentController {
 
-    private final PostService postService;
+    private final CommentService commentService;
 
 
     @GetMapping("/{postId}/comments")
-    public Response<CommentListResponse> getCommentsById(@PathVariable Long postId, Pageable pageable) {
+    public Response<CommentListResponse> getAllComments(@PathVariable Long postId, Pageable pageable) {
 
-        CommentListResponse commentListResponse = postService.getAllComments(postId, pageable);
+        CommentListResponse commentListResponse = commentService.getAllComments(postId, pageable);
         return Response.success(commentListResponse);
     }
 
@@ -32,7 +32,7 @@ public class CommentController {
                                             @RequestBody CommentRequest commentRequest,
                                             Authentication authentication) {
 
-        CommentResponse commentResponse = postService.writeComment(commentRequest, authentication.getName(), postId);
+        CommentResponse commentResponse = commentService.writeComment(commentRequest, authentication.getName(), postId);
         return Response.success(commentResponse);
     }
 
@@ -42,7 +42,7 @@ public class CommentController {
                                           @PathVariable Long id,
                                           @RequestBody CommentRequest commentRequest,
                                           Authentication authentication) {
-        CommentResponse commentResponse = postService.editComment(commentRequest, authentication.getName(), postId, id);
+        CommentResponse commentResponse = commentService.editComment(commentRequest, authentication.getName(), postId, id);
         return Response.success(commentResponse);
     }
 
@@ -52,7 +52,7 @@ public class CommentController {
     public Response<CommentDeleteResponse> delete(@PathVariable Long postsId,
                                           @PathVariable Long id,
                                           Authentication authentication) {
-        CommentDeleteResponse commentDeleteResponse = postService.deleteComment(authentication.getName(), postsId, id);
+        CommentDeleteResponse commentDeleteResponse = commentService.deleteComment(authentication.getName(), postsId, id);
         return Response.success(commentDeleteResponse);
     }
 

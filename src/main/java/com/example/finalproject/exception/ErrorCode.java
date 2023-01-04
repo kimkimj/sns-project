@@ -16,7 +16,9 @@ public enum ErrorCode {
 
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "포스트를 찾을 수 없습니다"),
 
-    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다");
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다"),
+
+    DUPLICATED_LIKES(HttpStatus.CONFLICT, "이미 좋아요를 눌렀습니다.");
 
     private HttpStatus httpStatus;
     private String message;
