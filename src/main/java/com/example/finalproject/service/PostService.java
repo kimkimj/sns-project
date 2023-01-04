@@ -1,6 +1,7 @@
 package com.example.finalproject.service;
 
 import com.example.finalproject.domain.dto.comment.CommentDeleteResponse;
+import com.example.finalproject.domain.dto.comment.CommentListResponse;
 import com.example.finalproject.domain.dto.comment.CommentRequest;
 import com.example.finalproject.domain.dto.comment.CommentResponse;
 import com.example.finalproject.domain.dto.post.PostGetResponse;
@@ -129,6 +130,24 @@ public class PostService {
 
     }
 
+    // ------------------------------COMMENTS----------------------------------
+
+    public CommentListResponse getAllComments(Long postId, Pageable pageable) {
+        Post post = checkIfPostExists(postId);
+        Page<Comment> list = commentRepository.findAll(pageable);
+        List<CommentResponse> commentListResponse = list.map(lists -> CommentResponse.builder()
+                        .id(lists.getCommentId())
+                        .comment(lists.getComment())
+                        .userName(lists.getUser().getUsername())
+                        .postId(lists.getPost().getPostId())
+                        .createdAt(lists.getCreated_at())
+                        .build())
+                .toList();
+
+        return CommentListResponse.builder()
+                .list(commentListResponse)
+                .build();
+    }
 
     public CommentResponse writeComment(CommentRequest commentRequest, String username, Long postId) {
         User user = checkIfUserExists(username);

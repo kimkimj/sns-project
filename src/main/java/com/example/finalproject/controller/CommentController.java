@@ -2,10 +2,12 @@ package com.example.finalproject.controller;
 
 import com.example.finalproject.domain.Response;
 import com.example.finalproject.domain.dto.comment.CommentDeleteResponse;
+import com.example.finalproject.domain.dto.comment.CommentListResponse;
 import com.example.finalproject.domain.dto.comment.CommentRequest;
 import com.example.finalproject.domain.dto.comment.CommentResponse;
 import com.example.finalproject.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +18,13 @@ public class CommentController {
 
     private final PostService postService;
 
-    /* 댓글 조회
-    @GetMapping("/{postId}/comments")
-    public Response<CommentResponse> getCommentsById(@PathVariable Long postId) {
 
-    }*/
+    @GetMapping("/{postId}/comments")
+    public Response<CommentListResponse> getCommentsById(@PathVariable Long postId, Pageable pageable) {
+
+        CommentListResponse commentListResponse = postService.getAllComments(postId, pageable);
+        return Response.success(commentListResponse);
+    }
 
     // 댓글 작성
     @PostMapping("/{postId}/comments")
@@ -45,7 +49,7 @@ public class CommentController {
     // 댓글 삭제
     // possible 오류: postsId (복수형)
     @DeleteMapping("/{postsId}/comments/{id}")
-    public Response<CommentDeleteResponse> edit(@PathVariable Long postsId,
+    public Response<CommentDeleteResponse> delete(@PathVariable Long postsId,
                                           @PathVariable Long id,
                                           Authentication authentication) {
         CommentDeleteResponse commentDeleteResponse = postService.deleteComment(authentication.getName(), postsId, id);
