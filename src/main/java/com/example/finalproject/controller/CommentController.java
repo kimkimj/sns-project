@@ -47,12 +47,11 @@ public class CommentController {
     }
 
     // 댓글 삭제
-    // possible 오류: postsId (복수형)
-    @DeleteMapping("/{postsId}/comments/{id}")
-    public Response<CommentDeleteResponse> delete(@PathVariable Long postsId,
+    @DeleteMapping("/{postId}/comments/{id}")
+    public Response<CommentDeleteResponse> delete(@PathVariable Long postId,
                                           @PathVariable Long id,
                                           Authentication authentication) {
-        CommentDeleteResponse commentDeleteResponse = commentService.deleteComment(authentication.getName(), postsId, id);
+        CommentDeleteResponse commentDeleteResponse = commentService.deleteComment(authentication.getName(), postId, id);
         return Response.success(commentDeleteResponse);
     }
 
