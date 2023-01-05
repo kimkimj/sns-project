@@ -14,6 +14,6 @@ public class HelloController {
     }
 
     @GetMapping("/cicd")
-    public String cicdCheck() { return "cicd2";}
+    public String cicdCheck() { return "cicd3";}
 
 }
