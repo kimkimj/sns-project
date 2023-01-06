@@ -23,9 +23,11 @@ public class AlarmService {
 
     public AlarmListResponse getAlarms(String username, Pageable pageable) {
 
+        // 존재하는 유저인지 확인
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
 
+        // DB에서 유저
         Page<Alarm> alarm = alarmRepository.findAllByUser(user, pageable);
 
         List<AlarmResponse> alarmListResponse = alarm.map(alarms -> AlarmResponse.builder()
