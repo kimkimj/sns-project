@@ -1,10 +1,7 @@
 package com.example.finalproject.controller;
 
 import com.example.finalproject.domain.Response;
-import com.example.finalproject.domain.dto.comment.CommentDeleteResponse;
-import com.example.finalproject.domain.dto.comment.CommentListResponse;
-import com.example.finalproject.domain.dto.comment.CommentRequest;
-import com.example.finalproject.domain.dto.comment.CommentResponse;
+import com.example.finalproject.domain.dto.comment.*;
 import com.example.finalproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -39,12 +36,12 @@ public class CommentController {
 
     // 댓글 수정
     @PutMapping("/{postId}/comments/{id}")
-    public Response<CommentResponse> edit(@PathVariable Long postId,
+    public Response<CommentUpdateResponse> edit(@PathVariable Long postId,
                                           @PathVariable Long id,
                                           @RequestBody CommentRequest commentRequest,
                                           @ApiIgnore Authentication authentication) {
-        CommentResponse commentResponse = commentService.editComment(commentRequest, authentication.getName(), postId, id);
-        return Response.success(commentResponse);
+        CommentUpdateResponse commentUpdateResponse = commentService.editComment(commentRequest, authentication.getName(), postId, id);
+        return Response.success(commentUpdateResponse);
     }
 
     // 댓글 삭제

@@ -1,15 +1,13 @@
 package com.example.finalproject.service;
 
 import com.example.finalproject.domain.dto.like.LikeResponse;
+import com.example.finalproject.domain.entity.Alarm;
 import com.example.finalproject.domain.entity.Like;
 import com.example.finalproject.domain.entity.Post;
 import com.example.finalproject.domain.entity.User;
 import com.example.finalproject.exception.AppException;
 import com.example.finalproject.exception.ErrorCode;
-import com.example.finalproject.respository.CommentRepository;
-import com.example.finalproject.respository.LikeRepository;
-import com.example.finalproject.respository.PostRepository;
-import com.example.finalproject.respository.UserRepository;
+import com.example.finalproject.respository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +20,7 @@ public class LikeService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final LikeRepository likeRepository;
+    private final AlarmRepository alarmRepository;
 
     private User checkIfUserExists(String username) {
         User user = userRepository.findByUsername(username)
@@ -56,6 +55,17 @@ public class LikeService {
         likeRepository.save(like);
 
         LikeResponse likeResponse = new LikeResponse("좋아요를 눌렀습니다.");
+
+        Alarm alarm = Alarm.builder()
+                .alarmType("NEW_LIKE_ON_POST")
+                .text("new like!")
+                .user(post.getUser())
+                .targetUser(post.getUser().getUserId())
+                .fromUser(user.getUserId())
+                .registeredAt(LocalDateTime.now())
+                .lastModifiedAt(LocalDateTime.now())
+                .build();
+        alarmRepository.save(alarm);
 
         return likeResponse;
     }

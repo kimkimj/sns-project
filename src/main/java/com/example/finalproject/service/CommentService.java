@@ -1,14 +1,10 @@
 package com.example.finalproject.service;
 
-import com.example.finalproject.domain.dto.comment.CommentDeleteResponse;
-import com.example.finalproject.domain.dto.comment.CommentListResponse;
-import com.example.finalproject.domain.dto.comment.CommentRequest;
-import com.example.finalproject.domain.dto.comment.CommentResponse;
-import com.example.finalproject.domain.entity.Comment;
-import com.example.finalproject.domain.entity.Post;
-import com.example.finalproject.domain.entity.User;
+import com.example.finalproject.domain.dto.comment.*;
+import com.example.finalproject.domain.entity.*;
 import com.example.finalproject.exception.AppException;
 import com.example.finalproject.exception.ErrorCode;
+import com.example.finalproject.respository.AlarmRepository;
 import com.example.finalproject.respository.CommentRepository;
 import com.example.finalproject.respository.PostRepository;
 import com.example.finalproject.respository.UserRepository;
@@ -26,6 +22,7 @@ public class CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final AlarmRepository alarmRepository;
 
     private User checkIfUserExists(String username) {
         User user = userRepository.findByUsername(username)
@@ -84,10 +81,21 @@ public class CommentService {
                 .createdAt(savedComment.getCreated_at())
                 .build();
 
+        Alarm alarm = Alarm.builder()
+                .alarmType("NEW_COMMENT_ON_POST")
+                .text("new comment!")
+                .user(post.getUser())
+                .targetUser(post.getUser().getUserId())
+                .fromUser(user.getUserId())
+                .registeredAt(LocalDateTime.now())
+                .lastModifiedAt(LocalDateTime.now())
+                .build();
+        alarmRepository.save(alarm);
+
         return commentResponse;
     }
 
-    public CommentResponse editComment(CommentRequest commentRequest, String username, Long postId, Long commentId) {;
+    public CommentUpdateResponse editComment(CommentRequest commentRequest, String username, Long postId, Long commentId) {;
         User user = checkIfUserExists(username);
         Post post = checkIfPostExists(postId);
 
@@ -99,15 +107,15 @@ public class CommentService {
 
         Comment savedComment = commentRepository.saveAndFlush(comment);
 
-        CommentResponse commentResponse = CommentResponse.builder()
+        CommentUpdateResponse commentUpdateResponse = CommentUpdateResponse.builder()
                 .id(savedComment.getCommentId())
                 .comment(savedComment.getComment())
                 .userName(savedComment.getUser().getUsername())
                 .postId(savedComment.getPost().getPostId())
                 .createdAt(savedComment.getCreated_at())
+                .lastModifiedAt(savedComment.getLast_modified_at())
                 .build();
-        return commentResponse;
-
+        return commentUpdateResponse;
     }
 
     public CommentDeleteResponse deleteComment(String username, Long postId, Long commentId) {
