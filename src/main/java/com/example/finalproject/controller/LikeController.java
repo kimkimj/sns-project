@@ -15,13 +15,13 @@ public class LikeController {
 
     private final LikeService likeService;
 
-    @PostMapping("/posts/{postId}/likes")
+    @PostMapping("/{postId}/likes")
     public Response<LikeResponse> clickLike(@PathVariable Long postId, @ApiIgnore Authentication authentication) {
         LikeResponse likeResponse = likeService.addLike(postId, authentication.getName());
         return Response.success(likeResponse);
     }
 
-    @GetMapping("/posts/{postId}/likes")
+    @GetMapping("/{postId}/likes")
     public Response<Long> countLikes(@PathVariable Long postId) {
         Long count = likeService.countLikes(postId);
         return Response.success(count);
