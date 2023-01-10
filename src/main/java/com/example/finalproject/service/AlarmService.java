@@ -40,7 +40,7 @@ public class AlarmService {
                         .toList();
 
         return AlarmListResponse.builder()
-                .list(alarmListResponse)
+                .content(alarmListResponse)
                 .build();
     }
 }
