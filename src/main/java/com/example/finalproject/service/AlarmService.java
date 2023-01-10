@@ -30,7 +30,7 @@ public class AlarmService {
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
 
         // Sort.by의 properties는 entity의 field name으로 해야한다
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("registeredAt"));
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("registeredAt"));
 
         // DB에서 유저
         Page<Alarm> alarm = alarmRepository.findAllByUser(user, pageable);

@@ -52,7 +52,7 @@ public class CommentService {
 
     public CommentListResponse getAllComments(Long postId) {
         Post post = checkIfPostExists(postId);
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("created_at"));
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("created_at"));
         Page<Comment> list = commentRepository.findAll(pageable);
         List<CommentResponse> commentListResponse = list.map(lists -> CommentResponse.builder()
                         .id(lists.getCommentId())
