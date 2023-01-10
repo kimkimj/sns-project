@@ -18,9 +18,9 @@ public class CommentController {
 
 
     @GetMapping("/{postId}/comments")
-    public Response<CommentListResponse> getAllComments(@PathVariable Long postId, @ApiIgnore Pageable pageable) {
+    public Response<CommentListResponse> getAllComments(@PathVariable Long postId) {
 
-        CommentListResponse commentListResponse = commentService.getAllComments(postId, pageable);
+        CommentListResponse commentListResponse = commentService.getAllComments(postId);
         return Response.success(commentListResponse);
     }
 

@@ -10,7 +10,9 @@ import com.example.finalproject.respository.PostRepository;
 import com.example.finalproject.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -48,8 +50,9 @@ public class CommentService {
         return comment;
     }
 
-    public CommentListResponse getAllComments(Long postId, Pageable pageable) {
+    public CommentListResponse getAllComments(Long postId) {
         Post post = checkIfPostExists(postId);
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("created_at"));
         Page<Comment> list = commentRepository.findAll(pageable);
         List<CommentResponse> commentListResponse = list.map(lists -> CommentResponse.builder()
                         .id(lists.getCommentId())
@@ -61,7 +64,7 @@ public class CommentService {
                 .toList();
 
         return CommentListResponse.builder()
-                .list(commentListResponse)
+                .content(commentListResponse)
                 .build();
     }
 
