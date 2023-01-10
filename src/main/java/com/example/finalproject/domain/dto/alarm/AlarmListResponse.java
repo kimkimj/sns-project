@@ -11,6 +11,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class AlarmListResponse {
-    private List<AlarmResponse> list;
+    private List<AlarmResponse> content;
     private Pageable pageable;
 }
