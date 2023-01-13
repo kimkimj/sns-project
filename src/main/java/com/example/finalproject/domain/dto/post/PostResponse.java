@@ -13,3 +13,4 @@ public class PostResponse {
     private String message;
     private Long postId;
 }
+

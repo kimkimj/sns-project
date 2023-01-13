@@ -94,7 +94,7 @@ public class PostService {
     }
 
     public PostResponse delete(Long postId, String username) {
-        User user = userRepository.findByUsername(username)
+        User user = getUserRepository().findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
 
         Post post = postRepository.findById(postId)
@@ -107,6 +107,10 @@ public class PostService {
         postRepository.deleteById(postId);
         PostResponse postResponse = new PostResponse("포스트 삭제 완료", postId);
         return postResponse;
+    }
+
+    private UserRepository getUserRepository() {
+        return userRepository;
     }
 
 

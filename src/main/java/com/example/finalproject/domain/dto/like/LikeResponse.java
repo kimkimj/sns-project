@@ -8,3 +8,4 @@ import lombok.*;
 public class LikeResponse {
     private String message;
 }
+

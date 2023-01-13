@@ -26,6 +26,7 @@ public class AlarmService {
     public AlarmListResponse getAlarms(String username) {
 
         // 존재하는 유저인지 확인
+
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
 

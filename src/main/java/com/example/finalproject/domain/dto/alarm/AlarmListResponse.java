@@ -14,3 +14,4 @@ public class AlarmListResponse {
     private List<AlarmResponse> content;
     private Pageable pageable;
 }
+

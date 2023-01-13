@@ -24,3 +24,4 @@ public class AlarmController {
         return Response.success(alarms);
     }
 }
+

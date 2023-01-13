@@ -17,3 +17,4 @@ public class PostListResponse {
     private List list;
     private Pageable pageable;
 }
+

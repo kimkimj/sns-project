@@ -17,3 +17,4 @@ public class HelloController {
     public String cicdCheck() { return "cicd again";}
 
 }
+

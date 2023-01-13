@@ -27,5 +27,4 @@ public class UserController {
         String token = userService.login(userLoginRequest);
         return Response.success(new UserLoginResponse(token));
     }
-
 }

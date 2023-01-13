@@ -17,3 +17,4 @@ public class PostGetResponse {
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
 }
+

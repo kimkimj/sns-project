@@ -35,3 +35,4 @@ public class Alarm {
 
     private Long fromUser;
 }
+

@@ -16,3 +16,4 @@ import java.util.List;
 public class CommentListResponse {
     private List<CommentResponse> content;
 }
+
