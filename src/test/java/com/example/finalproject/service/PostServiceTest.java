@@ -67,14 +67,14 @@ public class PostServiceTest {
             PostRequest postRequest = new PostRequest("title", "body");
 
             when(userRepository.findByUsername(any())).thenThrow(new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
-            AppException exception = assertThrows(AppException.class, () -> postService.create(any(), "username"));
-            assertEquals(ErrorCode.USERNAME_NOT_FOUND, exception.getErrorCode());
+            AppException exception = assertThrows(AppException.class, () -> postService.create(any(), "anotherUsername"));
+            assertEquals(ErrorCode.INVALID_PERMISSION, exception.getErrorCode());
         }
     }
 
     @Test
     @DisplayName("포스트 상세 조회 성공")
-    void GetOnePost_success() {
+    void find_post_success() {
         Long testPostId = 1L;
         when(postRepository.findById(testPostId)).thenReturn(Optional.of(mockPost));
 
@@ -84,11 +84,11 @@ public class PostServiceTest {
 
 
     @Nested
-    @DisplayName("포스트 수정 테스트")
+    @DisplayName("포스트 수정")
     class UpdatePostTest {
         @Test
-        @DisplayName("포스트 수정 실패: 해당 포스트가 존재하지 않는 경우")
-        void createPost_success() {
+        @DisplayName("포스트 수정 실패 - 해당 포스트가 존재하지 않는 경우")
+        void update_post_fail_1() {
             when(userRepository.findByUsername(any()))
                     .thenReturn(Optional.of(mockUser));
 
@@ -101,31 +101,34 @@ public class PostServiceTest {
         }
 
         @Test
-        @DisplayName("포스트 수정 실패: 해당 포스트가 존재하지 않는 경우")
-        void updatePost_fail_1() {
-            when(userRepository.findByUsername(any()))
-                    .thenReturn(Optional.of(mockUser));
-
-            when(postRepository.findById(any()))
-                    .thenThrow(new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
-
-            PostRequest postRequest = new PostRequest("title", "body");
-            AppException exception = Assertions.assertThrows(AppException.class, () -> postService.update(mockPost.getPostId(), postRequest, "username"));
-            assertEquals(ErrorCode.POST_NOT_FOUND, exception.getErrorCode());
-        }
-
-        @Test
-        @DisplayName("포스트 수정 실패: 작성자 불일치")
+        @DisplayName("포스트 수정 실패 - 해당 유저가 존재하지 않는 경우")
         void updatePost_fail_2() {
             when(userRepository.findByUsername(any()))
-                    .thenReturn(Optional.of(mockUser));
+                    .thenReturn(Optional.empty());
 
             when(postRepository.findById(any()))
-                    .thenThrow(new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+                    .thenThrow(new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
 
             PostRequest postRequest = new PostRequest("title", "body");
             AppException exception = Assertions.assertThrows(AppException.class, () -> postService.update(mockPost.getPostId(), postRequest, "username"));
-            assertEquals(ErrorCode.POST_NOT_FOUND, exception.getErrorCode());
+            assertEquals(ErrorCode.USERNAME_NOT_FOUND, exception.getErrorCode());
+        }
+
+        @Test
+        @DisplayName("포스트 수정 실패 - 작성자 불일치")
+        void updatePost_fail_3() {
+            when(userRepository.findByUsername(any()))
+                    .thenReturn(Optional.of(mockUser));
+
+            when(postRepository.findById(any())).thenReturn(Optional.of(mockPost));
+
+            User anotherMockUser = mock(User.class);
+            when(userRepository.findByUsername(any())).thenReturn(Optional.of(anotherMockUser));
+
+            AppException exception = Assertions.assertThrows(
+                    AppException.class,
+                    () -> postService.update(mockPost.getPostId(), new PostRequest("title", "body"), anotherMockUser.getUsername()));
+            assertEquals(ErrorCode.INVALID_PERMISSION, exception.getErrorCode());
         }
     }
 
@@ -147,9 +150,11 @@ public class PostServiceTest {
         }
     }
 
-        @Test
-        @DisplayName("Failed to delete post: Current user is not the author of the post ")
-        public void deleteFail_3() {}
+    @Test
+    @DisplayName("Failed to delete post: Current user is not the author of the post ")
+    public void deleteFail_3() {
+    }
+
 }
 
 
