@@ -114,6 +114,7 @@ public class PostServiceTest {
             assertEquals(ErrorCode.USERNAME_NOT_FOUND, exception.getErrorCode());
         }
 
+
         @Test
         @DisplayName("포스트 수정 실패 - 작성자 불일치")
         void updatePost_fail_3() {
