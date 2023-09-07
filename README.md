@@ -68,6 +68,7 @@ POST /api/v1/posts/{postId}/likes 좋아요 누르기
 
 <br>
 GET /api/v1/posts/my 마이피드 조회
+<br>
 
 <br>
 GET /api/v1/alarms 알람 조회
