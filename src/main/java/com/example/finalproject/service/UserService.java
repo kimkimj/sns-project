@@ -43,9 +43,9 @@ public class UserService {
     public String login(UserLoginRequest request) {
 
         // username이 db에 없을 때
-        User selectedUser = userRepository.findByUsername(request.getUserName())
+        User selectedUser = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND,
-                        String.format("%s 이 없습니다", request.getUserName())));
+                        String.format("%s 이 없습니다", request.getUsername())));
 
         // wrong password
         if(!encoder.matches(request.getPassword(), selectedUser.getPassword())) {
@@ -61,7 +61,7 @@ public class UserService {
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, ""));
-        }
+    }
 }
 
 
