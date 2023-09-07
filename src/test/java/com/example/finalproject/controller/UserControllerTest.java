@@ -1,6 +1,5 @@
 package com.example.finalproject.controller;
 
-import com.example.finalproject.domain.dto.user.UserDto;
 import com.example.finalproject.domain.dto.user.UserJoinRequest;
 import com.example.finalproject.domain.dto.user.UserJoinResponse;
 import com.example.finalproject.domain.dto.user.UserLoginRequest;
@@ -47,11 +46,11 @@ class UserControllerTest {
     void join_success() throws Exception {
 
         UserJoinRequest userJoinRequest = new UserJoinRequest(username, password);
-        UserJoinResponse userJoinResponse = new UserJoinResponse(userJoinRequest.getUserName());
+        UserJoinResponse userJoinResponse = new UserJoinResponse(userJoinRequest.getUsername());
 
 
         when(userService.join(any()))
-                .thenReturn(mock(UserDto.class));
+                .thenReturn(mock(UserJoinResponse.class));
 
         mockMvc.perform(post("/api/v1/users/join")
                         .with(csrf())

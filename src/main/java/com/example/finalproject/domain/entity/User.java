@@ -1,18 +1,13 @@
 package com.example.finalproject.domain.entity;
 
 import com.example.finalproject.domain.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +19,11 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    public User(String username, String password, UserRole role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 }
 

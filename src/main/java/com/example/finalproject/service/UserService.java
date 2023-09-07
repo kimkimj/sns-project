@@ -1,7 +1,7 @@
 package com.example.finalproject.service;
 
+import com.example.finalproject.domain.dto.user.UserJoinResponse;
 import com.example.finalproject.domain.entity.User;
-import com.example.finalproject.domain.dto.user.UserDto;
 import com.example.finalproject.domain.dto.user.UserJoinRequest;
 import com.example.finalproject.domain.dto.user.UserLoginRequest;
 import com.example.finalproject.exception.AppException;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-    // 중복 체크를 위해 DB에 다녀와야 한다
+    // 중복 체크를 위해 DB에서 확인
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
 
@@ -25,23 +25,19 @@ public class UserService {
     private String key;
     private Long expireTimeMs = 1000 * 60 * 60l; // 1시간 후 expire 한다
 
-    public UserDto join(UserJoinRequest request) {
+    public UserJoinResponse join(UserJoinRequest request) {
 
         // username 중복 체크해서 이미 존재하는 아이디면 exception
-        userRepository.findByUsername(request.getUserName())
+        userRepository.findByUsername(request.getUsername())
                 .ifPresent(user -> {
                     throw new AppException(ErrorCode.USERNAME_DUPLICATED,
-                            String.format("%s은 이미 존재하는 아이디 입니다", request.getUserName()));
+                            String.format("%s은 이미 존재하는 아이디 입니다", request.getUsername()));
                 });
 
         // 아니라면 저장
         User savedUser = userRepository.save(request.toEntity(encoder.encode(request.getPassword())));
 
-        // 반환
-        return UserDto.builder()
-                .id(savedUser.getUserId())
-                .username(savedUser.getUsername())
-                .build();
+        return new UserJoinResponse(savedUser.getUsername());
     }
 
     public String login(UserLoginRequest request) {
