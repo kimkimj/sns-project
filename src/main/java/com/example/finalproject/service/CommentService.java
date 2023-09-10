@@ -1,5 +1,6 @@
 package com.example.finalproject.service;
 
+import com.example.finalproject.domain.dto.alarm.AlarmType;
 import com.example.finalproject.domain.dto.comment.*;
 import com.example.finalproject.domain.entity.*;
 import com.example.finalproject.exception.AppException;
@@ -72,15 +73,8 @@ public class CommentService {
                 savedComment.getPost().getPostId(),
                 savedComment.getCreatedAt());
 
-        Alarm alarm = Alarm.builder()
-                .alarmType("NEW_COMMENT_ON_POST")
-                .text("new comment!")
-                .user(post.getUser())
-                .targetUser(post.getUser().getUserId())
-                .fromUser(user.getUserId())
-                .registeredAt(LocalDateTime.now())
-                .lastModifiedAt(LocalDateTime.now())
-                .build();
+        Alarm alarm = new Alarm(AlarmType.NEW_COMMENT, "새로운 댓글이 달렸습니다", LocalDateTime.now(),
+                user, post.getUser().getUserId(), user.getUserId());
         alarmRepository.save(alarm);
 
         return commentResponse;

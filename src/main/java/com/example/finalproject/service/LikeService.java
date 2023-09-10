@@ -1,5 +1,6 @@
 package com.example.finalproject.service;
 
+import com.example.finalproject.domain.dto.alarm.AlarmType;
 import com.example.finalproject.domain.dto.like.LikeResponse;
 import com.example.finalproject.domain.entity.Alarm;
 import com.example.finalproject.domain.entity.Like;
@@ -53,15 +54,8 @@ public class LikeService {
 
         LikeResponse likeResponse = new LikeResponse(postLike);
 
-        Alarm alarm = Alarm.builder()
-                .alarmType("NEW_LIKE_ON_POST")
-                .text("new like!")
-                .user(post.getUser())
-                .targetUser(post.getUser().getUserId())
-                .fromUser(user.getUserId())
-                .registeredAt(LocalDateTime.now())
-                .lastModifiedAt(LocalDateTime.now())
-                .build();
+        Alarm alarm = new Alarm(AlarmType.NEW_LIKE, user.getUsername() + "가 좋아요를 눌렀습니다",
+                LocalDateTime.now(), user, post.getUser().getUserId(), user.getUserId());
         alarmRepository.save(alarm);
 
         return likeResponse;

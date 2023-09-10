@@ -7,16 +7,22 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class AlarmResponse {
     private Long id;
-    private String alarmType;
+    private AlarmType alarmType;
     private Long fromUserId;
     private Long targetId;
     private String text;
     private LocalDateTime createdAt;
+
+    public AlarmResponse(AlarmType alarmType, Long fromUserId, Long targetId, String text, LocalDateTime createdAt) {
+        this.alarmType = alarmType;
+        this.fromUserId = fromUserId;
+        this.targetId = targetId;
+        this.text = text;
+        this.createdAt = createdAt;
+    }
 }
 

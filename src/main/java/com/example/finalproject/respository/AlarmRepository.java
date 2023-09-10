@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AlarmRepository extends JpaRepository<Alarm, Long> {
-    public Page<Alarm> findAllByUser(User user, Pageable pageable);
+    //public Page<Alarm> findAllByUser(User user, Pageable pageable);
+    public Page<Alarm> findAllByTargetUserId(Long targetUserId, Pageable pageable);
 }
 

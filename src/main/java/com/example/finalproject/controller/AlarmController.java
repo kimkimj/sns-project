@@ -19,7 +19,7 @@ public class AlarmController {
     private final AlarmService alarmService;
 
     @GetMapping
-    public Response<AlarmListResponse> getAlarms(@ApiIgnore Authentication authentication, @ApiIgnore Pageable pageable) {
+    public Response<AlarmListResponse> getAlarms(@ApiIgnore Authentication authentication) {
         AlarmListResponse alarms = alarmService.getAlarms(authentication.getName());
         return Response.success(alarms);
     }

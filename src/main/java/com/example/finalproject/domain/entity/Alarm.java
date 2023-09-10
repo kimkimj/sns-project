@@ -1,5 +1,6 @@
 package com.example.finalproject.domain.entity;
 
+import com.example.finalproject.domain.dto.alarm.AlarmType;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -9,30 +10,34 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Alarm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long alarmId;
 
-    private String alarmType;
+    @Enumerated(EnumType.STRING)
+    private AlarmType alarmType;
     private String text;
 
     @CreatedDate
     private LocalDateTime registeredAt;
 
-    @LastModifiedDate
-    private LocalDateTime lastModifiedAt;
-
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
 
-    private Long targetUser;
+    private Long targetUserId;
 
-    private Long fromUser;
+    private Long fromUserId;
+
+    public Alarm(AlarmType alarmType, String text, LocalDateTime registeredAt, User user, Long targetUserId, Long fromUserId) {
+        this.alarmType = alarmType;
+        this.text = text;
+        this.registeredAt = registeredAt;
+        this.user = user;
+        this.targetUserId = targetUserId;
+        this.fromUserId = fromUserId;
+    }
 }
 
