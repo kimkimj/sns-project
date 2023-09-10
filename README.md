@@ -17,6 +17,8 @@ http://ec2-54-180-106-134.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/#
 
 <br/></br>
 ### ERD 
+![sns_db_model.png](..%2F..%2FOneDrive%2FDesktop%2FLion%2Fsns_db_model.png)
+
 
 <br/></br>
 ### 요구사항
@@ -63,7 +65,7 @@ DELETE /api/v1/posts/{postsId}/comments/{id} 댓글 삭제
 <br>
 GET api/v1/posts/{postsId}/likes 좋아요 수 조회
 
-POST /api/v1/posts/{postId}/likes 좋아요 누르기
+POST /api/v1/posts/{postId}/likes 좋아요 누르기/취소
 
 
 <br>
