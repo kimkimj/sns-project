@@ -4,7 +4,6 @@ import com.example.finalproject.domain.Response;
 import com.example.finalproject.domain.dto.comment.*;
 import com.example.finalproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -12,10 +11,9 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts")
-public class CommentController {
+public class CommentRestController {
 
     private final CommentService commentService;
-
 
     @GetMapping("/{postId}/comments")
     public Response<CommentListResponse> getAllComments(@PathVariable Long postId) {

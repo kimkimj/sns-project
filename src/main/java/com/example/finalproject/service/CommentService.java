@@ -11,12 +11,11 @@ import com.example.finalproject.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,24 +49,15 @@ public class CommentService {
         return comment;
     }
 
+    @Transactional(readOnly = true)
     public CommentListResponse getAllComments(Long postId) {
         Post post = checkIfPostExists(postId);
-        Pageable pageable = PageRequest.of(0, 20, Sort.by("created_at"));
-        Page<Comment> list = commentRepository.findAll(pageable);
-        List<CommentResponse> commentListResponse = list.map(lists -> CommentResponse.builder()
-                        .id(lists.getCommentId())
-                        .comment(lists.getComment())
-                        .userName(lists.getUser().getUsername())
-                        .postId(lists.getPost().getPostId())
-                        .createdAt(lists.getCreated_at())
-                        .build())
-                .toList();
-
-        return CommentListResponse.builder()
-                .content(commentListResponse)
-                .build();
+        PageRequest pageRequest= PageRequest.of(0, 20, Sort.by("createdAt"));
+        Page<Comment> list = commentRepository.findAll(pageRequest);
+        return new CommentListResponse(list);
     }
 
+    @Transactional
     public CommentResponse writeComment(CommentRequest commentRequest, String username, Long postId) {
         User user = checkIfUserExists(username);
         Post post = checkIfPostExists(postId);
@@ -76,13 +66,11 @@ public class CommentService {
 
         Comment savedComment = commentRepository.save(comment);
 
-        CommentResponse commentResponse = CommentResponse.builder()
-                .id(savedComment.getCommentId())
-                .comment(savedComment.getComment())
-                .postId(savedComment.getPost().getPostId())
-                .userName(savedComment.getPost().getUser().getUsername())
-                .createdAt(savedComment.getCreated_at())
-                .build();
+        CommentResponse commentResponse = new CommentResponse(savedComment.getCommentId(),
+                savedComment.getComment(),
+                savedComment.getPost().getUser().getUsername(),
+                savedComment.getPost().getPostId(),
+                savedComment.getCreatedAt());
 
         Alarm alarm = Alarm.builder()
                 .alarmType("NEW_COMMENT_ON_POST")
@@ -98,6 +86,7 @@ public class CommentService {
         return commentResponse;
     }
 
+    @Transactional
     public CommentUpdateResponse editComment(CommentRequest commentRequest, String username, Long postId, Long commentId) {;
         User user = checkIfUserExists(username);
         Post post = checkIfPostExists(postId);
@@ -105,22 +94,14 @@ public class CommentService {
         // 댓글이 존재하고 댓글의 작성자가 맞다면 comment로 가져오기
         Comment comment = checkForCommentAndUserPermission(commentId, username);
 
-        comment.setComment(commentRequest.getComment());
-        comment.setLast_modified_at(LocalDateTime.now());
+        comment.update(commentRequest.getComment());
 
-        Comment savedComment = commentRepository.saveAndFlush(comment);
-
-        CommentUpdateResponse commentUpdateResponse = CommentUpdateResponse.builder()
-                .id(savedComment.getCommentId())
-                .comment(savedComment.getComment())
-                .userName(savedComment.getUser().getUsername())
-                .postId(savedComment.getPost().getPostId())
-                .createdAt(savedComment.getCreated_at())
-                .lastModifiedAt(savedComment.getLast_modified_at())
-                .build();
-        return commentUpdateResponse;
+        return new CommentUpdateResponse(comment.getCommentId(), comment.getComment(),
+                comment.getUser().getUsername(), comment.getPost().getPostId(),
+                comment.getCreatedAt(), comment.getLastModifiedAt());
     }
 
+    @Transactional
     public CommentDeleteResponse deleteComment(String username, Long postId, Long commentId) {
         User user = checkIfUserExists(username);
         Post post = checkIfPostExists(postId);
@@ -130,10 +111,7 @@ public class CommentService {
 
         commentRepository.deleteById(comment.getCommentId());
 
-        return CommentDeleteResponse.builder()
-                .message("댓글 삭제 완료")
-                .id(comment.getCommentId())
-                .build();
+        return new CommentDeleteResponse(commentId, "댓글 삭제 완료");
     }
 }
 
