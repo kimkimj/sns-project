@@ -1,9 +1,6 @@
 package com.example.finalproject.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -12,20 +9,16 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Builder
 @Table(name = "likes")
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "like_id")
     Long likeId;
 
     @CreatedDate
-    LocalDateTime created_at;
-
-    @LastModifiedDate
-    LocalDateTime last_modified_at;
+    LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -34,5 +27,11 @@ public class Like {
     @ManyToOne
     @JoinColumn(name = "userId")
     User user;
+
+    public Like(LocalDateTime createdAt, Post post, User user) {
+        this.createdAt = createdAt;
+        this.post = post;
+        this.user = user;
+    }
 }
 

@@ -10,8 +10,10 @@ import com.example.finalproject.exception.ErrorCode;
 import com.example.finalproject.respository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,26 +37,21 @@ public class LikeService {
         return post;
     }
 
-
-    public LikeResponse addLike(Long postId, String username) {
+    // 좋아요를 누르지 않았다면 등록, 눌렀었다면 취소
+    @Transactional
+    public LikeResponse addOrRemoveLike(Long postId, String username) {
         User user = checkIfUserExists(username);
         Post post = checkIfPostExists(postId);
 
+        Optional<Like> postLike = likeRepository.findByUserAndPost(user, post);
+
         // likeRepository에서 해당 포스트에 유저 아이디가 중복되는 사람이 있는지 체크해야한다
-        likeRepository.findByUserAndPost(user, post).ifPresent(like -> {
-            throw new AppException(ErrorCode.DUPLICATED_LIKES, ErrorCode.DUPLICATED_LIKES.getMessage());
-        });
+        likeRepository.findByUserAndPost(user, post).ifPresentOrElse(
+                like -> {likeRepository.delete(like);},
+                () -> likeRepository.save(new Like(LocalDateTime.now(), post, user))
+        );
 
-        Like like = Like.builder()
-                .created_at(LocalDateTime.now())
-                .last_modified_at(LocalDateTime.now())
-                .post(post)
-                .user(user)
-                .build();
-
-        likeRepository.save(like);
-
-        LikeResponse likeResponse = new LikeResponse("좋아요를 눌렀습니다.");
+        LikeResponse likeResponse = new LikeResponse(postLike);
 
         Alarm alarm = Alarm.builder()
                 .alarmType("NEW_LIKE_ON_POST")
@@ -69,6 +66,8 @@ public class LikeService {
 
         return likeResponse;
     }
+
+
 
     // 좋아요 갯수
     public Long countLikes(Long postId) {
