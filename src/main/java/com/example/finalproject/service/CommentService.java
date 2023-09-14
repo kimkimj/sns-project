@@ -54,7 +54,7 @@ public class CommentService {
     public CommentListResponse getAllComments(Long postId) {
         Post post = checkIfPostExists(postId);
         PageRequest pageRequest= PageRequest.of(0, 20, Sort.by("createdAt"));
-        Page<Comment> list = commentRepository.findAll(pageRequest);
+        Page<Comment> list = commentRepository.findAllByPost(post, pageRequest);
         return new CommentListResponse(list);
     }
 
@@ -69,7 +69,7 @@ public class CommentService {
 
         CommentResponse commentResponse = new CommentResponse(savedComment.getCommentId(),
                 savedComment.getComment(),
-                savedComment.getPost().getUser().getUsername(),
+                savedComment.getUser().getUsername(),
                 savedComment.getPost().getPostId(),
                 savedComment.getCreatedAt());
 
