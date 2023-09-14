@@ -16,8 +16,8 @@
 http://ec2-54-180-106-134.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/#/post-controller
 
 <br/></br>
-### ERD 
-![sns_db_model.png](..%2F..%2FOneDrive%2FDesktop%2FLion%2Fsns_db_model.png)
+### ERD
+
 
 
 <br/></br>

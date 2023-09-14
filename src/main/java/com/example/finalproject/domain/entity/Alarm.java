@@ -24,7 +24,7 @@ public class Alarm {
     private LocalDateTime registeredAt;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     private Long targetUserId;
