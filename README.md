@@ -13,11 +13,11 @@
 
 <br/></br>
 ### Swagger 주소 
-http://ec2-54-180-106-134.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/#/post-controller
+
 
 <br/></br>
 ### ERD
-
+![sns_db_model](https://github.com/kimkimj/sns-project/assets/107951382/de8fe051-272f-4ea2-aff6-bef2a7ee0635)
 
 
 <br/></br>
